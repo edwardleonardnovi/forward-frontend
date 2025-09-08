@@ -1,0 +1,41 @@
+.timer-display {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #00bcd4;
+    padding: 12px;
+}
+
+.start-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+}
+
+.start-buttons button {
+    background: var(--bg);
+    border: 3px solid rgba(0, 188, 212, 0.4);
+    color: #00bcd4;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.start-buttons button:hover:enabled {
+    background: var(--bg);
+    color: var(--text);
+}
+
+.start-buttons button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.start-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 15px;
+}

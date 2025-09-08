@@ -1,0 +1,73 @@
+.bubble.stats {
+    padding: 0 20px 20px;
+    background-color: var(--bg);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    display: flex;
+    flex-direction: column;
+}
+
+.bubble.stats:hover {
+    background-color: var(--hover);
+}
+
+.stats-header {
+    padding: 20px 0;
+    font-size: 1.2rem;
+    color: var(--text);
+}
+
+.stats-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    background-color: white;
+    padding: 20px 20px 20px 0;
+    border-radius: 12px;
+}
+
+.chart-container {
+    flex: 1;
+    margin-right: 24px;
+    height: 200px;
+    padding-top: 10px;
+    background-color: var(--panel);
+    border-radius: 12px;
+}
+
+.stats-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    max-width: 15%;
+    min-width: 140px;
+}
+
+.stat-block {
+    background-color: var(--panel);
+    border-radius: 10px;
+    padding: 12px;
+    min-width: 80px;
+    flex: 1 1 auto;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.stat-block:hover {
+    background-color: var(--hover);
+    transform: scale(1.01);
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+}

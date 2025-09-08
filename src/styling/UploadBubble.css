@@ -1,0 +1,30 @@
+.upload-button {
+    display: inline-block;
+    margin-top: 8px;
+    background-color: white;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    padding: 8px 12px;
+    width: 120px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.upload-button:hover {
+    background-color: #1ab8b8;
+}
+
+.upload-feedback {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.dropzone {
+    transition: border-color 0.2s ease;
+}
+
+.dropzone:hover {
+    border-color: var(--accent);
+}

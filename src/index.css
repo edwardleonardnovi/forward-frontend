@@ -1,0 +1,17 @@
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(to bottom right, #f5f8fb, #ecf2f7);
+  color: var(--text);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}

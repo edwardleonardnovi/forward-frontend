@@ -1,0 +1,138 @@
+.bubble.runs {
+    padding: 20px;
+    padding-top: 0;
+    background-color: var(--bg);
+    border-radius: 12px;
+    max-height: 320px;
+    display: flex;
+    flex-direction: column;
+}
+
+.run-meta-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-right: 20px;
+    padding-bottom: 4px;
+    overflow-y: auto;
+}
+
+.run-meta-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.run-meta-list::-webkit-scrollbar-thumb {
+    background: var(--scroll-thumb);
+    border-radius: 8px;
+}
+
+.run-row {
+    background-color: var(--panel);
+    border-radius: 12px;
+    padding: 16px 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    flex-shrink: 0;
+    min-height: 140px;
+}
+
+.run-row:hover {
+    background-color: #c7e4ea;
+    transform: translateY(-2px);
+    cursor: pointer;
+}
+
+.run-header-full {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.run-title {
+    display: flex;
+    flex-direction: column !important;
+    justify-content: flex-start;
+    align-self: flex-start;
+}
+
+.run-header {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.run-subheader {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.run-map {
+    flex: 1 1 auto;
+    width: 50%;
+    height: 100px;
+}
+
+.run-map .leaflet-container {
+    height: 100% !important;
+    width: 100%;
+    border-radius: 8px;
+}
+
+.run-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.run-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
+    color: var(--accent);
+    transition: background-color 0.2s ease;
+}
+
+.run-actions button:hover {
+    background-color: rgba(32, 207, 207, 0.1);
+}
+
+.run-row-data {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 24px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.run-label-block {
+    display: flex;
+    flex-direction: column;
+    min-width: 80px;
+}
+
+.label-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+}
+
+.label-value,
+.label-value-time {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text);
+    padding-left: 10px;
+}
+
+.text-muted {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-top: 8px;
+}

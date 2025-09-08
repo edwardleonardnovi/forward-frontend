@@ -1,0 +1,10 @@
+.routes-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.example-routes {
+    width: 100px;
+    height: 100px;
+}
