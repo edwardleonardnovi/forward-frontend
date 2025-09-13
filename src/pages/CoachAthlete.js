@@ -8,13 +8,16 @@ function fmtDuration(sec) {
     const h = Math.floor(s / 3600);
     const m = Math.floor((s % 3600) / 60);
     const r = Math.floor(s % 60);
-    return h > 0 ? `${h}:${String(m).padStart(2,'0')}:${String(r).padStart(2,'0')}` : `${m}:${String(r).padStart(2,'0')}`;
+    return h > 0
+        ? `${h}:${String(m).padStart(2, '0')}:${String(r).padStart(2, '0')}`
+        : `${m}:${String(r).padStart(2, '0')}`;
 }
 
 export default function CoachAthlete() {
     const { id } = useParams();
     const navigate = useNavigate();
     const token = useMemo(() => localStorage.getItem('token'), []);
+
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState('');
     const [runs, setRuns] = useState([]);
@@ -24,27 +27,28 @@ export default function CoachAthlete() {
     const [detailErr, setDetailErr] = useState('');
     const [detailLoading, setDetailLoading] = useState(false);
 
+    // Runs ophalen
     useEffect(() => {
         let mounted = true;
         (async () => {
             try {
                 setLoading(true);
                 setErr('');
-                const res = await fetch(`http://localhost:8080//api/coach/athletes/${id}/runs`, {
+                const res = await fetch(`http://localhost:8080/api/coach/athletes/${id}/runs`, {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`,
                     },
                 });
+
                 if (res.status === 401) {
                     localStorage.removeItem('token');
                     navigate('/login');
                     return;
                 }
-                if (res.status === 403) {
-                    throw new Error('Geen toegang tot deze atleet.');
-                }
+                if (res.status === 403) throw new Error('Geen toegang tot deze atleet.');
                 if (!res.ok) throw new Error('Kon runs niet ophalen.');
+
                 const data = await res.json();
                 if (!mounted) return;
                 setRuns(Array.isArray(data) ? data : []);
@@ -55,29 +59,41 @@ export default function CoachAthlete() {
                 if (mounted) setLoading(false);
             }
         })();
-        return () => (mounted = false);
+        return () => {
+            mounted = false;
+        };
     }, [id, token, navigate]);
 
+    // Detail ophalen
     const openDetail = async (gpxId) => {
         try {
             setDetailLoading(true);
             setDetailErr('');
             setDetail(null);
-            const res = await fetch(`http://localhost:8080/api/coach/athletes/${id}/runs/${gpxId}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+
+            const res = await fetch(
+                `http://localhost:8080/api/coach/athletes/${id}/runs/${gpxId}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
             if (res.status === 401) {
                 localStorage.removeItem('token');
                 navigate('/login');
                 return;
             }
+            if (res.status === 403) {
+                throw new Error('Geen toegang tot deze run.');
+            }
             if (res.status === 404) {
                 throw new Error('Run niet gevonden.');
             }
             if (!res.ok) throw new Error('Kon run-details niet ophalen.');
+
             const data = await res.json();
             setDetail(data);
         } catch (e) {
@@ -87,8 +103,28 @@ export default function CoachAthlete() {
         }
     };
 
-    if (loading) return <div className="coach-wrap"><div className="loading">Runs laden…</div></div>;
-    if (err) return <div className="coach-wrap"><div className="error-banner">{err}</div></div>;
+    const closeModal = () => {
+        setDetail(null);
+        setDetailErr('');
+    };
+
+    if (loading) {
+        return (
+            <div className="coach-wrap">
+                <div className="loading">Runs laden…</div>
+            </div>
+        );
+    }
+    if (err) {
+        return (
+            <div className="coach-wrap">
+                <div className="error-banner">{err}</div>
+                <div style={{ marginTop: 12 }}>
+                    <Link to="/coach" className="btn-secondary">← Terug</Link>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="coach-wrap">
@@ -111,16 +147,20 @@ export default function CoachAthlete() {
                             <div>Pace</div>
                             <div></div>
                         </div>
-                        {runs.map(r => (
+                        {runs.map((r) => (
                             <div className="runs-row" key={r.id}>
                                 <div>{r.startDate ?? '—'}</div>
                                 <div>{r.startTime ?? '—'}</div>
                                 <div title={r.filename}>{r.filename ?? '—'}</div>
-                                <div>{r.distanceKm != null ? `${r.distanceKm.toFixed(2)} km` : '—'}</div>
+                                <div>
+                                    {r.distanceKm != null ? `${Number(r.distanceKm).toFixed(2)} km` : '—'}
+                                </div>
                                 <div>{fmtDuration(r.durationSec)}</div>
                                 <div>{r.pace ?? '—'}</div>
                                 <div>
-                                    <button className="btn-link" onClick={() => openDetail(r.id)}>Details</button>
+                                    <button className="btn-link" onClick={() => openDetail(r.id)}>
+                                        Details
+                                    </button>
                                 </div>
                             </div>
                         ))}
@@ -128,13 +168,12 @@ export default function CoachAthlete() {
                 )}
             </div>
 
-            {/* Detail modal */}
             {(detailLoading || detail || detailErr) && (
-                <div className="modal-backdrop" onClick={() => { setDetail(null); setDetailErr(''); }}>
+                <div className="modal-backdrop" onClick={closeModal}>
                     <div className="modal-card" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
                             <h3>Run-details</h3>
-                            <button className="btn-icon" onClick={() => { setDetail(null); setDetailErr(''); }}>✕</button>
+                            <button className="btn-icon" onClick={closeModal}>✕</button>
                         </div>
                         <div className="modal-body">
                             {detailLoading && <div className="loading">Details laden…</div>}
@@ -146,7 +185,7 @@ export default function CoachAthlete() {
                                     <div><span className="label">Datum</span><span>{detail.startDate ?? '—'}</span></div>
                                     <div><span className="label">Tijd</span><span>{detail.startTime ?? '—'}</span></div>
                                     <div><span className="label">ISO</span><span>{detail.startIso ?? '—'}</span></div>
-                                    <div><span className="label">Afstand</span><span>{detail.distanceKm != null ? `${detail.distanceKm.toFixed(2)} km` : '—'}</span></div>
+                                    <div><span className="label">Afstand</span><span>{detail.distanceKm != null ? `${Number(detail.distanceKm).toFixed(2)} km` : '—'}</span></div>
                                     <div><span className="label">Duur</span><span>{fmtDuration(detail.durationSec)}</span></div>
                                     <div><span className="label">Pace</span><span>{detail.pace ?? '—'}</span></div>
                                     <div><span className="label">Meters</span><span>{detail.distanceMeters ?? '—'}</span></div>
@@ -154,7 +193,7 @@ export default function CoachAthlete() {
                             )}
                         </div>
                         <div className="modal-footer">
-                            <button className="btn-secondary" onClick={() => { setDetail(null); setDetailErr(''); }}>Sluiten</button>
+                            <button className="btn-secondary" onClick={closeModal}>Sluiten</button>
                         </div>
                     </div>
                 </div>
